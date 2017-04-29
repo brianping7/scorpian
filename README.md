@@ -1,8 +1,20 @@
-## Welcome to GitHub Pages
+## Welcome to Scorpius Project
 
-You can use the [editor on GitHub](https://github.com/brianping7/scorpius/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This project is aim to integarte the home smart devices with other voice control solution. The project is still in initial phase, your comments and advices are fully welcomed.
+Current Scorpius Project supports the following devices:
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+	- Smart Televison
+		- Sony
+	- Smart Home Device
+		- MiHome (Xiao Mi)
+
+Scorpius Project has been tested with Amazon Alexa.
+
+# Installation
+
+### Markdown
+
+
 
 ### Markdown
 
@@ -35,3 +47,8 @@ Your Pages site will use the layout and styles from the Jekyll theme you have se
 ### Support or Contact
 
 Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+
+
+### Credits
+dsandor/fauxmojs - For the NodeJS UPNP/SSDP module
+BWS Systems - For the inspiration around the Hue emulation based approach
