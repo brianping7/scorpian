@@ -1,7 +1,7 @@
-# Welcome to Scorpius Project
+# Welcome to Scorpian Project
 
 This project is aim to integarte the home smart devices with other voice control solution. The project is still in initial phase, your comments and advices are fully welcomed.
-Current Scorpius Project supports the following devices:
+Current Scorpian Project supports the following devices:
 
 	- Smart Televison
 	    - Sony
@@ -9,61 +9,40 @@ Current Scorpius Project supports the following devices:
 	    - MiHome (Xiao Mi)
 	      - Vacuum
 
-Scorpius Project has been tested with Amazon Alexa.
+Scorpian Project has been tested with Amazon Alexa.
 
 ## Installation
+Use _npm_ to install the project.
 
 ```markdown
 cd ./scorpius
 npm install
 ```
 
-## Usage
+## Configure
+The folder **config** includes all the config file you may want to change.
+- Runtime Config
+	File _runtime.conf.js_ includes all the runtime config like port, device type and etc.
+```markdown
+"Port": 7007,				// The port the program will listen in order to get the instruction
+  "Delimiter": '_',			// You may want to use _"Action_Role"_ to make the _Role_ to do the _Action_
+  "MsgPreFix": "/:intent",
+  "SceneRole": "Jarvis",	// The Role who will run the scene (a serial actions)
+```
 
-Use node or nodejs to run the program
+## Usage
+Use _node_ or _nodejs_ to run the program.
 
 ```markdown
 node index.js
 ```
+You should see the program is listening the PORT you set in config file.
 
 
-### Markdown
+### Thanks
+alanreid/bravia - For the Sony Smart TV support.
+aholstenson/miio - For the MiHome plugin support.
 
-
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/brianping7/scorpius/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
 
 ### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
-
-
-### Credits
-dsandor/fauxmojs - For the NodeJS UPNP/SSDP module
-BWS Systems - For the inspiration around the Hue emulation based approach
+Having trouble with project? Check out our [Issues Support](https://github.com/brianping7/scorpian/issues) and we’ll help you sort it out.
