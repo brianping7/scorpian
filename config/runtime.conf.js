@@ -8,8 +8,9 @@
 var runtimeConf = {
   "Port": 7007,
   "Delimiter": '_',
-  "MsgPreFix": "/:intent",
   "SceneRole": "Jarvis",
+  "MsgPreFix": "/:intent",
+
 
   "DeviceType": {
     "Televison": {

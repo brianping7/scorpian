@@ -7,20 +7,14 @@
 
 var deviceConf = {
   "Friday": {
-    "ip": "192.168.2.253",
-    "token": "1112",
-    "type" : "tv",
-    "brand": "sony"
-  },
-  "Dummy":{
-    "ip" : "192.168.2.252",
-    "token" : "1112",
+    "ip": "192.168.2.2",
+    "token": "1234",
     "type" : "tv",
     "brand": "sony"
   },
   "Yoyo":{
-    "ip" : "192.168.2.251",
-    "token" : "45644679334675563948745955556b66",
+    "ip" : "192.168.2.3",
+    "token" : "2342342",
     "type" : "mi",
     "subType": "vacuum"
   }
