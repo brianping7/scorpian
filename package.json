@@ -1,8 +1,14 @@
 {
-  "name": "Home-Jarvis",
+  "name": "Scorpius",
   "version": "0.0.1",
-  "description": "Control your Home Devices...",
+  "description": "Integrate your Home Devices...",
   "main": "index.js",
+  "keywords": [
+    "home",
+    "alexa",
+    "integration",
+    "mihome"
+  ],
   "dependencies": {
     "node-uuid": "^1.4.2",
     "request": "^2.51.0",
