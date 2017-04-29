@@ -21,12 +21,11 @@ npm install
 
 ## Configure
 The folder **config** includes all the config file you may want to change.
-- Runtime Config
-	File _runtime.conf.js_ includes all the runtime config like port, device type and etc.
+- Runtime Config: File _runtime.conf.js_ includes all the runtime config like port, device type and etc.
 ```markdown
 "Port": 7007,				// The port the program will listen in order to get the instruction
-  "Delimiter": '_',			// You may want to use _"Action_Role"_ to make the _Role_ to do the _Action_
-  "MsgPreFix": "/:intent",
+  "Delimiter": '=',			// You may want to use **"Action=Role"** to make the **Role** to do the **Action**
+  "MsgPreFix": "/:intent",  // The prefix of your request string
   "SceneRole": "Jarvis",	// The Role who will run the scene (a serial actions)
 ```
 
