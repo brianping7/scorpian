@@ -1,0 +1,25 @@
+{
+  "name": "Home-Jarvis",
+  "version": "0.0.1",
+  "description": "Control your Home Devices...",
+  "main": "index.js",
+  "dependencies": {
+    "node-uuid": "^1.4.2",
+    "request": "^2.51.0",
+    "tough-cookie-filestore": "0.0.1",
+    "wake_on_lan": "0.0.4",
+    "express": "4.15.2",
+    "appdirectory": "^0.1.0",
+    "debug": "^2.6.3",
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brian Ping",
+  "license": "MIT"
+}
