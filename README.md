@@ -1,8 +1,6 @@
 # Welcome to Scorpian Project
 
-This project is aim to integrate the home smart devices with voice control solution. The project is still in initial phase, your comments and advices are fully welcomed.
-Current Scorpian Project supports the following devices:
-
+This project is aim to integrate the home smart devices with voice control solution. The project is still in initial phase, your comments and advices are fully welcomed. Current Scorpian Project supports the following devices:
 	- Smart Televison
 	    - Sony
 	- Smart Home Device
