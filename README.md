@@ -20,13 +20,41 @@ npm install
 ```
 
 ## Configure
-The folder **config** includes all the config file you may want to change.
+The folder **config** includes all the config file you may want to change. It will help you to config the device or the serial actions you want the device to act. 
+
 - Runtime Config: File _runtime.conf.js_ includes all the runtime config like port, device type and etc.
 ```markdown
-"Port": 7007,				// The port the program will listen in order to get the instruction
-  "Delimiter": '=',			// You may want to use **"Action=Role"** to make the **Role** to do the **Action**
-  "MsgPreFix": "/:intent",  // The prefix of your request string
-  "SceneRole": "Jarvis",	// The Role who will run the scene (a serial actions)
+"Port": 7007,              // The port the program will listen in order to get instruction
+  "Delimiter": '=',	       // You may want to use **"Action=Role"** to make **Role** to do **Action**
+  "MsgPreFix": "/:intent", // The prefix of your request string
+  "SceneRole": "Jarvis",   // The Role who will run the scene (a serial actions)
+```
+
+- Device Config: File _device.conf.js_ includes the device information like IP, type and etc.
+```markdown
+"Friday": {                // You may want give your device a nick name.
+    "ip": "192.168.2.253", // The IP address
+    "token": "1112",       // The token of the device if any
+    "type" : "tv",         // The device type
+    "brand": "sony"        // The brand of the device
+  },
+```
+
+- Scene Config: File _scene.conf.js_ includes all scene you want to support.
+```markdown
+"leave": {                 // The scene name, like you are leaving home
+    "actions": [           
+      {
+        "device": "dummy", // The device nick name
+        "action": "stop"   // The action you want the device to act.
+      },
+      {
+        "device": "friday",
+        "action": "stop"
+      }
+    ],
+  }
+
 ```
 
 ## Usage
