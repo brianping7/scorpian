@@ -1,16 +1,16 @@
-## Welcome to Scorpius Project
+# Welcome to Scorpius Project
 
 This project is aim to integarte the home smart devices with other voice control solution. The project is still in initial phase, your comments and advices are fully welcomed.
 Current Scorpius Project supports the following devices:
 
 	- Smart Televison
-		- Sony
+	    - Sony
 	- Smart Home Device
-		- MiHome (Xiao Mi)
+	    - MiHome (Xiao Mi)
 
 Scorpius Project has been tested with Amazon Alexa.
 
-# Installation
+## Installation
 
 ### Markdown
 
