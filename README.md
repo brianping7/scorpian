@@ -67,8 +67,9 @@ You should see the program is listening the PORT you set in config file.
 
 
 ### Thanks
-alanreid/bravia - For the Sony Smart TV support.
-aholstenson/miio - For the MiHome plugin support.
+Most plugin parts are customized from other project.
+  - alanreid/bravia - For the Sony Smart TV support.
+  - aholstenson/miio - For the MiHome plugin support.
 
 
 ### Support or Contact
