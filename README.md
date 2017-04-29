@@ -7,10 +7,25 @@ Current Scorpius Project supports the following devices:
 	    - Sony
 	- Smart Home Device
 	    - MiHome (Xiao Mi)
+	      - Vacuum
 
 Scorpius Project has been tested with Amazon Alexa.
 
 ## Installation
+
+```markdown
+cd ./scorpius
+npm install
+```
+
+## Usage
+
+Use node or nodejs to run the program
+
+```markdown
+node index.js
+```
+
 
 ### Markdown
 
