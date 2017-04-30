@@ -16,7 +16,7 @@ Use _npm_ to install the project.
 cd ./scorpius
 npm install
 ```
-There is a docker image will prepare the running environment you may want to leverage [Scorpian Docker]https://github.com/brianping7/scorpian-docker)
+There is a docker image will prepare the running environment you may want to leverage [Scorpian Docker](https://github.com/brianping7/scorpian-docker). 
 
 ## Configure
 The folder **config** includes all the config file you may want to change. It will help you to config the device or the serial actions you want the device to act. 
