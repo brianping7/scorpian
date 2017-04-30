@@ -6,6 +6,7 @@
 'use strict';
 
 var runtimeConf = {
+  "Version": "0.0.1",
   "Port": 7007,
   "Delimiter": '_',
   "SceneRole": "Jarvis",
