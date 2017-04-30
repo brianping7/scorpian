@@ -12,12 +12,7 @@ const http = require('http');
 const express = require('express');
 var args = require('commander');
 
-var TvSony = require('./plugin/tvSony');
-var MiHome = require('./plugin/miHome');
-
-var DeviceConf = require('./config/device.conf.js');
 var RuntimeConf = require('./config/runtime.conf.js');
-var SceneConf = require('./config/scene.conf.js');
 
 var roleAction = require('./core/roleAction.js');
 var sceneAction = require('./core/sceneAction.js');
