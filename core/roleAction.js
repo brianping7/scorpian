@@ -48,7 +48,7 @@ exports.prcsRoleAction = function (role, intent) {
 
     var localDevice = null;
     MiHome(role, device.ip, '0000', device.token, device.subType)
-    then(device =>  {
+    .then(device =>  {
       localDevice = device;
       localDevice.exec(intent)
     });
