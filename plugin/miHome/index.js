@@ -38,14 +38,27 @@ var MiHome = function(name, ip, port, token, model) {
       var para = { address: ip, token: token };
     };
 
-    miio.device(para)
-      .then(device => {
-          this.device = device;
-          debugger;       
-          console.log(this.name + " " + this.device.type + " init success");
-          return this;
-        })
-      .catch(err => console.error(this.name + " init error: " + err));
+    return new Promise(function(resolve, reject){
+       miio.device(para)
+        .then(device => {
+            this.device = device;
+            debugger;       
+            console.log(this.name + " " + this.device.type + " init success");
+            resolve(this);
+          })
+        .catch(err => {
+          console.error(this.name + " init error: " + err);
+          reject(err);
+        });
+
+    // miio.device(para)
+    //   .then(device => {
+    //       this.device = device;
+    //       debugger;       
+    //       console.log(this.name + " " + this.device.type + " init success");
+    //       return this;
+    //     })
+    //   .catch(err => console.error(this.name + " init error: " + err));
   }
   
 };
