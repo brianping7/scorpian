@@ -40,13 +40,18 @@ class MiHome {
       };
 
       return new Promise(function(resolve, reject){
+         this.ip = ip;
+      this.port = port
+      this.token = token;
+      this.name = name
+      this.model = model
+      this.device = null;
+
          miio.device(para)
           .then(device => {
               this.device = device;
-              var returnObj = this;
-              debugger;       
-              console.log(returnObj.name + " " + returnObj.device.type + " init success");
-              resolve(returnObj);
+              console.log(this.name + " " + this.device.type + " init success");
+              resolve(this);
             })
           .catch(err => { 
             console.error(this.name + " init error: " + err);
