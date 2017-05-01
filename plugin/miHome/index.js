@@ -25,6 +25,8 @@ var MiHome = function(name, ip, port, token, model) {
     this.device.init()
     .then(() => console.log(this.model + " init success"))
     .catch(err => console.error(this.model + " init error: " + err));
+
+    return this;
   }
   else {
 
@@ -39,10 +41,11 @@ var MiHome = function(name, ip, port, token, model) {
       .then(device => {
           this.device = device;       
           console.log(this.name + " " + this.device.type + " init success");
+          return this;
         })
       .catch(err => console.error(this.name + " init error: " + err));
   }
-  return this;
+  
 };
 
 
