@@ -50,6 +50,7 @@ var MiHome = function(name, ip, port, token, model) {
           console.error(this.name + " init error: " + err);
           reject(err);
         });
+      }
 
     // miio.device(para)
     //   .then(device => {
@@ -59,7 +60,7 @@ var MiHome = function(name, ip, port, token, model) {
     //       return this;
     //     })
     //   .catch(err => console.error(this.name + " init error: " + err));
-  
+  };
 };
 
 
