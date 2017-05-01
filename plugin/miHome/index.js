@@ -59,7 +59,6 @@ var MiHome = function(name, ip, port, token, model) {
     //       return this;
     //     })
     //   .catch(err => console.error(this.name + " init error: " + err));
-  }
   
 };
 
