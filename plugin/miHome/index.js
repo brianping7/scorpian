@@ -42,9 +42,10 @@ var MiHome = function(name, ip, port, token, model) {
        miio.device(para)
         .then(device => {
             this.device = device;
+            var returnObj = this;
             debugger;       
-            console.log(this.name + " " + this.device.type + " init success");
-            resolve(this);
+            console.log(returnObj.name + " " + returnObj.device.type + " init success");
+            resolve(returnObj);
           })
         .catch(err => {
           console.error(this.name + " init error: " + err);

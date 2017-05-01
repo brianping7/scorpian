@@ -47,8 +47,8 @@ exports.prcsRoleAction = function (role, intent) {
   else if ( device.type == RuntimeConf.DeviceType.MiHome.Type) {
 
     MiHome(role, device.ip, '0000', device.token, device.subType)
-    .then (device => {
-            device.exec(intent);
+    .then (returnObj => { 
+            returnObj.exec(intent);
           })
     .catch(err => {
           console.error(this.name + " init error: " + err);
