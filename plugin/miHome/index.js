@@ -40,13 +40,6 @@ class MiHome {
       };
 
       return new Promise(function(resolve, reject){
-         this.ip = ip;
-      this.port = port
-      this.token = token;
-      this.name = name
-      this.model = model
-      this.device = null;
-
          miio.device(para)
           .then(device => {
               this.device = device;
