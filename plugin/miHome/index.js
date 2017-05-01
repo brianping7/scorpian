@@ -23,10 +23,11 @@ var MiHome = function(name, ip, port, token, model) {
     });
 
     this.device.init()
-    .then(() => console.log(this.model + " init success"))
+    .then(() => {
+        console.log(this.model + " init success");
+        return this;
+    })
     .catch(err => console.error(this.model + " init error: " + err));
-
-    return this;
   }
   else {
 
