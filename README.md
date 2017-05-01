@@ -23,7 +23,7 @@ The folder **config** includes all the config file you may want to change. It wi
 
 - Runtime Config: File _runtime.conf.js_ includes all the runtime config like port, device type and etc.
 ```markdown
-"Port": 7007,              // The port the program will listen in order to get instruction
+  "Port": 7007,            // The port the program will listen in order to get instruction
   "Delimiter": '=',        // You may want to use **"Action=Role"** to make **Role** to do **Action**
   "MsgPreFix": "/:intent", // The prefix of your request string
   "SceneRole": "Jarvis",   // The Role who will run the scene (a serial actions)
@@ -32,8 +32,8 @@ The folder **config** includes all the config file you may want to change. It wi
 - Device Config: File _device.conf.js_ includes the device information like IP, type and etc.
 ```markdown
 "Friday": {                // You may want give your device a nick name.
-    "ip": "192.168.1.2", // The IP address
-    "token": "12345",       // The token of the device if any
+    "ip": "192.168.1.2",   // The IP address
+    "token": "12345",      // The token of the device if any
     "type" : "tv",         // The device type
     "brand": "sony"        // The brand of the device
   },

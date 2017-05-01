@@ -38,7 +38,7 @@ var MiHome = function(name, ip, port, token, model) {
     miio.device(para)
       .then(device => {
           this.device = device;       
-          console.log(this.name + " init success");
+          console.log(this.name + " " + this.device.type + " init success");
         })
       .catch(err => console.error(this.name + " init error: " + err));
   }
@@ -84,6 +84,14 @@ MiHome.prototype.exec = function(cmd) {
       }
 
       break;
+    
+    case 'List':
+      if (this.device.type == 'gateway') {
+        console.log(this.device.devices);
+      }
+
+      break;
+
     default:
       console.log('Invalid type:' + cmd);
   }
