@@ -40,7 +40,8 @@ var MiHome = function(name, ip, port, token, model) {
 
     miio.device(para)
       .then(device => {
-          this.device = device;       
+          this.device = device;
+          debugger;       
           console.log(this.name + " " + this.device.type + " init success");
           return this;
         })
