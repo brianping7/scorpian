@@ -48,7 +48,7 @@ exports.prcsRoleAction = function (role, intent) {
 
     var device = MiHome(role, device.ip, '0000', device.token, device.subType);
 
-    device.exec(intent);
+    //device.exec(intent);
   }
   else {
     return new Error('Invalid type: ' + device.type);
