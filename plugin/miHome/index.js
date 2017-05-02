@@ -3,7 +3,7 @@ var miio = require('./lib');
 // var vacuum = python.import('mirobot/protocol');
 
 
-class Mihome {
+class MiHome {
   constructor (name, ip, port, token, model) {
     this.ip = ip;
     this.port = port
