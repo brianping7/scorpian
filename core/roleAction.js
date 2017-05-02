@@ -46,7 +46,7 @@ exports.prcsRoleAction = function (role, intent) {
   } 
   else if ( device.type == RuntimeConf.DeviceType.MiHome.Type) {
 
-    var miDevice = MiHome(role, device.ip, '0000', device.token, device.subType);
+    var miDevice = new MiHome(role, device.ip, '0000', device.token, device.subType);
 
     miDevice.load()
     .then(function(obj){
