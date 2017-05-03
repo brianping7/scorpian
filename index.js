@@ -27,6 +27,7 @@ args
     .option('-r, --role [name]', 'Give the name of the role.')
     .option('-a, --action [act]', 'The action to act.')
     .option('-s, --scene [name]', 'Give the name of the scene.')
+    .option('-l, --list [name]', 'List the sub device of the role')
     //.option('-c, --cheese [type]', 'Add the specified type of cheese [marble]', 'marble')
     .parse(process.argv);
 
@@ -50,6 +51,10 @@ else if (args.scene) {
   });
 
   return;
+}
+else if (args.list)
+{
+    
 }
 
 /****************************************************************

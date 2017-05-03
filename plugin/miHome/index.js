@@ -124,6 +124,15 @@ class MiHome {
 
   }
 
+  list() {
+    var that = this;
+
+    if(that.device.devices) {
+      console.log(that.device.devices);
+    }
+
+  }
+
 };
 
 

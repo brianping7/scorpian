@@ -65,3 +65,24 @@ exports.prcsRoleAction = function (role, intent) {
 
   return;
 }
+
+exports.prcsSubDeviceList = function (role) {
+  var device = DeviceConf[role];
+
+  if (device == undefined || device.type != 'gateway') {
+    return new Error('Invalid role: ' + role + ' with type ' + device.type);
+  }
+
+  var miDevice = new MiHome(role, device.ip, '0000', device.token, device.subType);
+
+  miDevice.load()
+  .then(function(obj){
+    obj.list();
+  })
+  .catch(function(err){
+    console.error(role + " load error: " + err);
+  });
+
+
+}
+  
