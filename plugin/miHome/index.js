@@ -39,11 +39,11 @@ class MiHome {
       }
       else {
 
-        if (token == null) {
-          var para = { address: ip };
+        if (that.token == null) {
+          var para = { address: that.ip };
         }
         else {
-          var para = { address: ip, token: token };
+          var para = { address: that.ip, token: that.token };
         };
 
         miio.device(para)
