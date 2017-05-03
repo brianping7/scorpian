@@ -50,7 +50,7 @@ exports.prcsRoleAction = function (role, intent) {
 
     miDevice.load()
     .then(function(obj){
-      obj.cmd(intent);
+      obj.exec(intent);
     })
     .catch(function(err){
       console.error(role + " load error: " + err);
