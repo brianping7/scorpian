@@ -4,6 +4,7 @@ var miio = require('./lib');
 
 
 class MiHome {
+  
   constructor (name, ip, port, token, model) {
     this.ip = ip;
     this.port = port
@@ -15,22 +16,24 @@ class MiHome {
 
 
   load () {
-    return this.loading = new Promise(function(resolve, reject){        //做一些异步操作
+    var that = this;
+
+    return that.loading = new Promise(function(resolve, reject){
         
-      if (this.model == 'vacuum') {
-        this.device = miio.createDevice({
-          address: this.ip,
-          token: this.token,
+      if (that.model == 'vacuum') {
+        that.device = miio.createDevice({
+          address: that.ip,
+          token: that.token,
           model: 'rockrobo.vacuum.v1'
         });
 
-        this.device.init()
+        that.device.init()
         .then(() => {
-          console.log(this.model + " init success");
-          resolve(this);
+          console.log(that.model + " init success");
+          resolve(that);
         })
         .catch(err => {
-          console.error(this.model + " init error: " + err);
+          console.error(that.model + " init error: " + err);
           reject(err);
         });
       }
@@ -45,12 +48,12 @@ class MiHome {
 
         miio.device(para)
           .then(device => {
-              this.device = device;       
-              console.log(this.name + " " + this.device.type + " init success");
-              resolve(this);
+              that.device = device;       
+              console.log(that.name + " " + that.device.type + " init success");
+              resolve(that);
             })
           .catch(err => {
-          console.error(this.name + " init error: " + err);
+          console.error(that.name + " init error: " + err);
           reject(err);
         });
       }
