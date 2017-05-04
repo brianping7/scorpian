@@ -100,7 +100,7 @@ class MiHome {
       
       case 'List':
         if (this.device.type == 'gateway') {
-          console.log(this.device.devices);
+          this.list();
         }
 
         break;
