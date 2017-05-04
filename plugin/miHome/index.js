@@ -128,7 +128,12 @@ class MiHome {
     var that = this;
 
     if(that.device.devices) {
-      console.log(that.device.devices);
+
+      that.device.devices.forEach(function(item){  
+        console.log(item); 
+      })  
+
+      
     }
 
   }
