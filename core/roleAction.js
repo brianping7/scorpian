@@ -69,7 +69,7 @@ exports.prcsRoleAction = function (role, intent) {
 exports.prcsSubDeviceList = function (role) {
   var device = DeviceConf[role];
 
-  if (device == undefined || device.type != 'gateway') {
+  if (device == undefined ) {
     return new Error('Invalid role: ' + role + ' with type ' + device.type);
   }
 
