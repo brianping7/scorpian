@@ -100,9 +100,7 @@ class MiHome {
       
       case 'List':
         if (this.device.type == 'gateway') {
-          this.device.devices.forEach(function(item){  
-            console.log('SubDevice:' + item); 
-          })
+          this.list();
         }
 
         break;
@@ -128,14 +126,12 @@ class MiHome {
 
   list() {
     var that = this;
-
+    console.log('All SubDevice:'); 
     if(that.device.devices) {
 
       that.device.devices.forEach(function(item){  
-        console.log('SubDevice:' + item); 
+        console.log('-' + item); 
       })  
-
-      
     }
 
   }
