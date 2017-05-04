@@ -130,7 +130,7 @@ class MiHome {
     if(that.device.devices) {
 
       that.device.devices.forEach(function(item){  
-        console.log(item); 
+        console.log('SubDevice:' + item); 
       })  
 
       
