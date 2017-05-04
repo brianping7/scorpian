@@ -100,7 +100,9 @@ class MiHome {
       
       case 'List':
         if (this.device.type == 'gateway') {
-          this.list();
+          this.device.devices.forEach(function(item){  
+            console.log('SubDevice:' + item); 
+          })
         }
 
         break;
