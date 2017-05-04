@@ -54,7 +54,7 @@ else if (args.scene) {
 }
 else if (args.list)
 {
-    roleAction.prcsSubDeviceList(role, function(retVal) {
+    roleAction.prcsSubDeviceList(args.role, function(retVal) {
       if (retVal) {
         console.error(retVal);  
         throw retVal;
