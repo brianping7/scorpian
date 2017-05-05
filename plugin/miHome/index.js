@@ -127,6 +127,9 @@ class MiHome {
   list() {
     var that = this;
     console.log('All SubDevice:'); 
+
+    that.device.on('deviceAvailable', subDevice => console.log('ID: ' + subDevice.id + 'Model:' + subDevice.model));
+
     if(that.device.devices) {
 
       that.device.devices.forEach(function(item){  
