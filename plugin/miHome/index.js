@@ -105,6 +105,11 @@ class MiHome {
 
         break;
 
+      case 'PowerOff':
+          this.powerOff();
+
+        break;
+
       default:
         console.log('Invalid type:' + cmd);
     }
@@ -123,6 +128,31 @@ class MiHome {
     }
 
   }
+
+  powerOff() {
+    var that = this;
+
+    if(this.device.type == 'gateway') {
+      that.device.on('deviceAvailable', subDevice => {
+        if (subDevice.type == 'switch') {
+            console.log('Status: ' + subDevice.power());
+        }
+        
+        return;
+      });
+    }
+    else {
+      
+    }
+
+    // if(this.device.hasCapability('power')) {
+    //   this.device.setPower(true)
+    //     .then(console.log(this.name + ":Power On"))
+    //     .catch(console.error(this.name + "Failed to Power On"));
+    // }
+
+  }
+
 
   list() {
     var that = this;
