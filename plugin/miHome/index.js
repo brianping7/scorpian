@@ -135,14 +135,15 @@ class MiHome {
     if(this.device.type == 'gateway') {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'switch') {
-            console.log('Status: ' + subDevice.power());
+            
+            console.log('Status: ' + subDevice);
         }
         
         return;
       });
     }
     else {
-      
+
     }
 
     // if(this.device.hasCapability('power')) {
