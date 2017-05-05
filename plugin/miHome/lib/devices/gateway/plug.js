@@ -1,3 +1,5 @@
+'use strict';
+
 
 const SubDevice = require('./subdevice');
 
@@ -10,7 +12,7 @@ class Plug extends SubDevice {
 	constructor(parent, info) {
 		super(parent, info);
 
-		this.type = 'switch';
+		this.type = 'power-plug';
 		this.model = 'lumi.plug';
 
 		this.defineProperty('status', {
@@ -18,7 +20,7 @@ class Plug extends SubDevice {
 			mapper: v => v == 'on'
 		});
 		PowerChannels.extend(this, {
-			channels: 1,
+			channels: [ 0 ],
 			set: (channel, power) => this.call('toggle_plug', [ 'neutral_' + channel, power ? 'on' : 'off' ])
 		});
 

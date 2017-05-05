@@ -1,7 +1,23 @@
+'use strict';
+
 
 const EventEmitter = require('events');
 
 const IDENTITY_MAPPER = v => v;
+
+class SubDeviceManagement {
+	constructor(device) {
+		this._device = device;
+	}
+
+	info() {
+		const device = this._device;
+		return Promise.resolve({
+			id: device.id,
+			model: device.model
+		});
+	}
+}
 
 class SubDevice extends EventEmitter {
 	constructor(parent, info) {
@@ -18,6 +34,7 @@ class SubDevice extends EventEmitter {
 
 		this._parent = parent;
 
+		this.management = new SubDeviceManagement(this);
 		this.debug = require('debug')(parent.debug.namespace + '.' + info.id);
 	}
 
@@ -49,6 +66,10 @@ class SubDevice extends EventEmitter {
 				});
 			}
 		});
+	}
+
+	get properties() {
+		return Object.assign({}, this._properties);
 	}
 
 	property(key) {

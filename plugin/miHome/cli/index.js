@@ -3,34 +3,69 @@
 const args = require('minimist')(process.argv.slice(2));
 const fs = require('fs');
 
+const chalk = require('chalk');
+
 const Packet = require('../lib/packet');
 const Device = require('../lib/device');
-const Browser = require('../lib/discovery');
+const { Browser, Devices } = require('../lib/discovery');
 const Tokens = require('../lib/tokens');
+const models = require('../lib/models');
+const createDevice = require('../lib/createDevice');
+
+const deviceFinder = require('./device-finder');
 
 const tokens = new Tokens();
 
+function info() {
+	console.log(chalk.bgWhite.black(' INFO '), Array.prototype.join.call(arguments, ' '));
+}
+
+function error() {
+	console.log(chalk.bgRed.white(' ERROR '), Array.prototype.join.call(arguments, ' '));
+}
+
+function warn() {
+	console.log(chalk.bgYellow.black(' WARNING '), Array.prototype.join.call(arguments, ' '));
+}
+
+function log() {
+	console.log.apply(console, arguments);
+}
+
+function showDeviceInfo(reg) {
+	const supported = reg.model && reg.type;
+	log(chalk.bold('Device ID:'), reg.id);
+	log(chalk.bold('Model info:'), reg.model || 'Unknown', reg.type ? chalk.dim('(' + reg.type + ')') : '');
+
+	if(reg.address) {
+		log(chalk.bold('Address:'), reg.address, (reg.hostname ? chalk.dim('(' + reg.hostname + ')') : ''));
+	} else if(reg.parent) {
+		log(chalk.bold('Address:'), 'Owned by', reg.parent.id);
+	}
+	if(reg.token) {
+		log(chalk.bold('Token:'), reg.token, reg.autoToken ? chalk.green('via auto-token') : chalk.yellow('via stored token'));
+	} else if(! reg.parent) {
+		log(chalk.bold('Token:'), '???')
+	} else {
+		log(chalk.bold('Token:'), chalk.green('Automatic via parent device'));
+	}
+	log(chalk.bold('Support:'), reg.model ? (supported ? chalk.green('At least basic') : chalk.yellow('Generic')) : chalk.yellow('Unknown'));
+	log();
+}
+
 if(args.discover) {
-	console.log('Discovering devices. Press Ctrl+C to stop.')
-	console.log();
-	const browser = new Browser({
-		cacheTime: 60,
-		useTokenStorage: false
+	info('Discovering devices. Press Ctrl+C to stop.')
+	log();
+	const browser = deviceFinder({
+		instances: true
 	});
 	browser.on('available', reg => {
-		const supported = reg.model && reg.type;
-		console.log('Device ID:', reg.id);
-		console.log('Model ID:', reg.model || 'Unknown');
-		console.log('Type:', reg.type);
-		console.log('Address:', reg.address + (reg.hostname ? ' (' + reg.hostname + ')' : ''));
-		console.log('Token:', reg.token);
-		console.log('Support:', reg.model ? (supported ? 'At least basic' : 'Generic') : 'Unknown');
-		console.log();
+		showDeviceInfo(reg);
 
-		if(args.sync && reg.token) {
+		if(args.sync && reg.token && reg.autoToken) {
 			tokens.update(reg.id, reg.token)
 				.catch(err => {
-					console.error('Could not update tokens', err);
+					error('Could not update token for', reg.id, ':', err);
 				});
 		}
 	});
@@ -39,11 +74,11 @@ if(args.discover) {
 	const passwd = args.passwd;
 
 	if(typeof ssid === 'undefined') {
-		console.error('--ssid must be used and set to name of the wireless network the device should connect to');
+		error('--ssid must be used and set to name of the wireless network the device should connect to');
 		process.exit(1);
 	}
 	if(typeof passwd === 'undefined') {
-		console.error('--passwd must be used and set to password of the wireless network');
+		error('--passwd must be used and set to password of the wireless network');
 		process.exit(1);
 	}
 
@@ -51,32 +86,29 @@ if(args.discover) {
 	if(typeof args.configure !== 'boolean') {
 		// We want a specific address or id
 		target = String(args.configure);
-		console.log('Attempting to configure', target);
+		info('Attempting to configure', target);
 	} else {
-		console.log('Configuring all devices');
+		info('Configuring all devices');
 	}
-	console.log();
+	log();
 
 	let hasConfigured = false;
 	let pending = 0;
-	const browser = new Browser({
-		cacheTime: 20,
-		useTokenStorage: false
-	});
+	const browser = deviceFinder({
+		filter: target
+	})
 	browser.on('available', reg => {
-		if(target) {
-			// There is a target so apply filter to make sure we match
-			if(reg.id !== target && reg.address !== target) return;
-		}
-
 		if(typeof args.token === 'string') {
 			reg.token = args.token;
 		}
 		else if(! reg.token) {
-			console.log(reg.id, 'at', reg.address, 'does not support auto-tokens, skipping configuration');
+			warn(reg.id, 'at', reg.address, 'does not support auto-tokens, skipping configuration');
+			log();
+			return;
 		}
 
 		pending++;
+
 		const device = new Device(reg);
 		device.init()
 			.then(() => {
@@ -84,7 +116,7 @@ if(args.discover) {
 			})
 			.then(info => {
 				if(info.ap && info.ap.ssid === String(ssid)) {
-					console.log(reg.id, 'at', reg.address, 'is already configured to use this network');
+					warn(reg.id, 'at', reg.address, 'is already configured to use this network');
 					hasConfigured = true;
 					return;
 				}
@@ -94,15 +126,15 @@ if(args.discover) {
 					passwd: String(passwd)
 				}).then(r => {
 					hasConfigured = true;
-					console.log(reg.id, 'at', reg.address, 'now uses', ssid, 'as its network');
-					console.log('  Token:', reg.token);
-					console.log();
+					info(reg.id, 'at', reg.address, 'now uses', ssid, 'as its network');
+					log('  Token:', reg.token);
+					log();
 					return tokens.update(reg.id, reg.token);
 				})
 			})
 			.catch(err => {
-				console.error(reg.id, 'at', reg.address, 'encountered an error while configuring:', err.message);
-				console.error();
+				error(reg.id, 'at', reg.address, 'encountered an error while configuring:', err.message);
+				log();
 			})
 			.then(() => {
 				pending--;
@@ -112,9 +144,9 @@ if(args.discover) {
 	setTimeout(() => {
 		if(pending == 0) {
 			if(! hasConfigured) {
-				console.log('No devices were configured');
+				warn('No devices were configured');
 			} else {
-				console.log('Done');
+				info('Done');
 			}
 			process.exit(0);
 		}
@@ -122,9 +154,9 @@ if(args.discover) {
 
 	setTimeout(() => {
 		if(! hasConfigured) {
-			console.log('No devices were configured');
+			warn('No devices were configured');
 		} else {
-			console.log('Done');
+			info('Done');
 		}
 		process.exit(0);
 	}, 60000);
@@ -133,36 +165,39 @@ if(args.discover) {
 	if(typeof args.update !== 'boolean') {
 		// We want a specific address or id
 		target = String(args.update);
-		console.log('Attempting to update', target);
+		info('Attempting to update', target);
 	} else {
-		console.error('Need to specify id or address to device');
+		error('Need to specify id or address to device');
 		process.exit(1);
 	}
 
 	if(! args.token) {
-		console.error('Token is required when updating a device');
+		error('Token is required when updating a device');
 		process.exit(1);
 	}
 
 	let hasConfigured = false;
 	let pending = 0;
-	const browser = new Browser({
-		cacheTime: 20,
-		useTokenStorage: false
+	const browser = deviceFinder({
+		filter: target
 	});
 	browser.on('available', reg => {
-		if(target) {
-			// There is a target so apply filter to make sure we match
-			if(reg.id !== target && reg.address !== target) return;
-		}
-
 		pending++;
-		tokens.update(reg.id, args.token)
+		reg.token = args.token;
+		const device = new Device(reg);
+		device.init()
+			.then(() => device.management.info())
 			.then(() => {
-				console.log('Device updated');
+				return tokens.update(reg.id, args.token)
+					.then(() => {
+						info('Device updated');
+					})
+					.catch(err => {
+						error('Could not update device:', err.message);
+					});
 			})
 			.catch(err => {
-				console.error('Could not update device:', err.message);
+				error('Could not update device, token might not be correct. Error was:', err.message);
 			})
 			.then(() => {
 				pending--;
@@ -174,16 +209,119 @@ if(args.discover) {
 	setTimeout(() => {
 		if(pending == 0) {
 			if(! hasConfigured) {
-				console.log('Could not find device');
+				warn('Could not find device');
 			} else {
-				console.log('Done');
+				info('Done');
+			}
+			process.exit(0);
+		}
+	}, 5000);
+} else if(args.inspect) {
+	let target = null;
+	if(typeof args.inspect !== 'boolean') {
+		// We want a specific address or id
+		target = String(args.inspect);
+		info('Attempting to inspect', target);
+	} else {
+		error('Need to specify id or address to device');
+		process.exit(1);
+	}
+
+	let foundDevice = false;
+	let pending = 0;
+	const browser = deviceFinder({
+		instances: true,
+		filter: target
+	});
+	browser.on('available', reg => {
+		pending++;
+		if(! reg.device && ! reg.token) {
+			error('Can\'t connect to device, token could not be found');
+			process.exit(1);
+		}
+
+		if(! reg.device) {
+			error('Can\'t connect to device, error while connecting: ', (reg.error && reg.error.message) || 'Unknown error');
+			process.exit(1);
+		}
+
+		reg.device.management.info()
+			.then(info => {
+				const model = models[info.model];
+
+				reg.model = info.model;
+				reg.type = model ? model.TYPE : reg.device.type;
+
+				log();
+				showDeviceInfo(reg);
+
+				if(! reg.parent) {
+					log(chalk.bold('Firmware version:'), info.fw_ver);
+					log(chalk.bold('Hardware version:'), info.hw_ver);
+					if(info.mcu_fw_ver) {
+						log(chalk.bold('MCU firmware version:'), info.mcu_fw_ver);
+					}
+					log();
+
+					if(info.ap) {
+						log(chalk.bold('WiFi:'), info.ap.ssid, chalk.dim('(' + info.ap.bssid + ')'), chalk.bold('RSSI:'), info.ap.rssi);
+					} else {
+						log(chalk.bold('WiFi:'), 'Not Connected');
+					}
+					if(info.wifi_fw_ver) {
+						log(chalk.bold('WiFi firmware version:'), info.wifi_fw_ver);
+					}
+					log();
+
+					if(info.ot) {
+						let type;
+						switch(info.ot) {
+							case 'otu':
+							type = 'UDP';
+							break;
+							case 'ott':
+							type = 'TCP';
+							break;
+							default:
+							type = 'Unknown (' + info.ot + ')';
+						}
+						console.log(chalk.bold('Remote access (Mi Home App):'), type);
+					} else {
+						console.log(chalk.bold('Remote access (Mi Home App):'), 'Maybe');
+					}
+					log();
+				}
+
+				const props = reg.device.properties;
+				const keys = Object.keys(props);
+				if(keys.length > 0) {
+					log(chalk.bold('Properties:'));
+					for(const key of keys) {
+						log('  -', key + ':', props[key]);
+					}
+				}
+			})
+			.catch(err => {
+				error('Could inspect device. Error was:', err.message);
+			})
+			.then(() => {
+				pending--;
+				hasConfigured = true;
+				process.exit(0);
+			});
+	});
+
+	setTimeout(() => {
+		if(pending == 0) {
+			if(! foundDevice) {
+				warn('Could not find device');
 			}
 			process.exit(0);
 		}
 	}, 5000);
 } else if(args.packet) {
 	if(! args.token) {
-		console.error('Token is required to extract packet contents');
+		error('Token is required to extract packet contents');
 		process.exit(1);
 	}
 
@@ -191,7 +329,7 @@ if(args.discover) {
 	packet.token = Buffer.from(args.token, 'hex');
 
 	if(typeof args.packet !== 'string') {
-		console.error('--packet needs the packet data to do anything useful');
+		error('--packet needs the packet data to do anything useful');
 		process.exit(1);
 	}
 	const raw = Buffer.from(args.packet, 'hex');
@@ -199,14 +337,14 @@ if(args.discover) {
 
 	const data = packet.data;
 	if(! data) {
-		console.error('Could not extract data from packet, check your token and packet data');
+		error('Could not extract data from packet, check your token and packet data');
 	} else {
-		console.log('Hex: ', data.toString('hex'));
-		console.log('String: ', data.toString());
+		log('Hex: ', data.toString('hex'));
+		log('String: ', data.toString());
 	}
 } else if(args['json-dump']) {
 	if(! args.token) {
-		console.error('Token is required to extract packets from JSON dump');
+		error('Token is required to extract packets from JSON dump');
 		process.exit(1);
 	}
 
@@ -242,9 +380,9 @@ if(args.discover) {
 		const raw = Buffer.from(rawString.replace(/:/g, ''), 'hex');
 		packet.raw = raw;
 
-		console.log(out ? '->' : '<-', layers.ip['ip.src'], ' data=', packet.data ? packet.data.toString() : 'N/A');
+		log(out ? chalk.bgBlue.white.bold(' -> ') : chalk.bgMagenta.white.bold(' <- '), chalk.yellow(layers.ip['ip.src']), chalk.dim('data='), packet.data ? packet.data.toString() : chalk.dim('N/A'));
 	});
 } else {
-	console.error('Unsupported mode');
+	error('Unsupported mode');
 	process.exit(1);
 }

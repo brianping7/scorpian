@@ -75,13 +75,9 @@ class Device extends EventEmitter {
 			this.debug('<-', 'Handshake reply:', this.packet.checksum);
 			this.packet.handleHandshakeReply();
 
-			let resolve = this._tokenResolve;
-
 			this._lastToken = Date.now();
-			this._tokenResolve = null;
-			this._tokenPromise = null;
 
-			resolve();
+			this._tokenResolve();
 		} else {
 			let data = this.packet.data;
 			if(! data) {
@@ -115,7 +111,7 @@ class Device extends EventEmitter {
 
 	_ensureToken() {
 		if(! this.packet.needsHandshake) {
-			return Promise.resolve();
+			return Promise.resolve(true);
 		}
 
 		if(this._hasFailedToken) {
@@ -128,12 +124,18 @@ class Device extends EventEmitter {
 		}
 
 		this._tokenPromise = new Promise((resolve, reject) => {
+			this.debug('-> Handshake');
 			this.packet.handshake();
 			const data = this.packet.raw;
 			this.socket.send(data, 0, data.length, this.port, this.address, err => err && reject(err));
 			this._tokenResolve = () => {
+				delete this._tokenPromise;
+				delete this._tokenResolve;
+				clearTimeout(this._tokenTimeout);
+				delete this._tokenTimeout;
+
 				if(this.packet.token) {
-					resolve();
+					resolve(true);
 				} else {
 					this._hasFailedToken = true;
 					reject(new Error('Token could not be auto-discovered'));
@@ -141,10 +143,15 @@ class Device extends EventEmitter {
 			};
 
 			// Reject in 1 second
-			setTimeout(() => {
-				this._tokenPromise = null;
-				reject();
-			}, 1000);
+			this._tokenTimeout = setTimeout(() => {
+				delete this._tokenPromise;
+				delete this._tokenResolve;
+				delete this._tokenTimeout;
+
+				const err = new Error('Handshake timeout');
+				err.code = 'timeout';
+				reject(err);
+			}, 1500);
 		});
 		return this._tokenPromise;
 	}
@@ -175,9 +182,13 @@ class Device extends EventEmitter {
 
 					if(options && options.refresh) {
 						// Special case for loading properties after setting values
-						this._loadProperties()
-							.then(() => resolve(res))
-							.catch(() => resolve(res));
+						// - delay a bit to make sure the device has time to respond
+						setTimeout(() => {
+							const properties = Array.isArray(options.refresh) ? options.refresh : this._propertiesToMonitor;
+							this._loadProperties(properties)
+								.then(() => resolve(res))
+								.catch(() => resolve(res))
+						}, (options && options.refreshDelay) || 50);
 					} else {
 						resolve(res);
 					}
@@ -204,26 +215,45 @@ class Device extends EventEmitter {
 				}
 			};
 
-			let sendsLeft = 3;
+			let sendsLeft = (options && options.retries) || 3;
+			const retry = () => {
+				if(--sendsLeft > 0) {
+					send();
+				} else {
+					const err = new Error('Call to device timed out');
+					err.code = 'timeout';
+					promise.reject(err);
+				}
+			};
+
 			const send = () => {
 				if(resolved) return;
 
 				this._ensureToken()
-					.then(() => {
+					.catch(err => {
+						if(err.code === 'timeout') {
+							this.debug('<- Handshake timed out');
+							retry();
+							return false;
+						} else {
+							throw err;
+						}
+					})
+					.then(token => {
+						// Token has timed out - handled via retry
+						if(! token) return;
+
+						this.debug('-> (' + sendsLeft + ')', json);
 						this.packet.data = Buffer.from(json, 'utf8');
 
 						const data = this.packet.raw;
 
-						this.debug('-> (' + sendsLeft + ')', json);
-						this.socket.send(data, 0, data.length, this.port, this.address, err => err && reject(err));
+						this.socket.send(data, 0, data.length, this.port, this.address, err => err && promise.reject(err));
 
-						if(--sendsLeft > 0) {
-							setTimeout(send, 2000);
-						} else {
-							promise.reject(new Error('Timeout'));
-						}
+						// Queue a retry in 2 seconds
+						setTimeout(retry, 2000);
 					})
-					.catch(reject);
+					.catch(promise.reject);
 			};
 
 			send();
@@ -268,7 +298,7 @@ class Device extends EventEmitter {
 
 		clearInterval(this._propertyMonitor);
 
-		this._propertyMonitor = setInterval(this._loadProperties, interval || 30000);
+		this._propertyMonitor = setInterval(this._loadProperties, interval || this._monitorInterval || 30000);
 		return this._loadProperties();
 	}
 
@@ -281,10 +311,14 @@ class Device extends EventEmitter {
 		}
 	}
 
-	_loadProperties() {
-		if(this._propertiesToMonitor.length === 0 || this.writeOnly) return Promise.resolve();
+	_loadProperties(properties) {
+		if(typeof properties === 'undefined') {
+			properties = this._propertiesToMonitor;
+		}
 
-		return this.loadProperties(this._propertiesToMonitor)
+		if(properties.length === 0 || this.writeOnly) return Promise.resolve();
+
+		return this.loadProperties(properties)
 			.then(values => {
 				Object.keys(values).forEach(key => {
 					this.setProperty(key, values[key]);
@@ -315,6 +349,10 @@ class Device extends EventEmitter {
 
 	property(key) {
 		return this._properties[key];
+	}
+
+	get properties() {
+		return Object.assign({}, this._properties);
 	}
 
 	getProperties(props) {
@@ -349,29 +387,13 @@ class Device extends EventEmitter {
 		this.socket.close();
 	}
 
-	discover() {
-		return this._ensureToken()
-			.then(() => {
-				return {
-					token: this.packet.token
-				}
-			});
-	}
+	/**
+	 * Check that the current result is equal to the string `ok`.
+	 */
+	static checkOk(result) {
+		if(result != 'ok') throw new Error('Could not perform operation');
 
-	updateToken(token) {
-		// Update the token used for this device
-		this._hasFailedToken = false;
-
-		if(typeof token === 'string') {
-			this.packet.token = Buffer.from(token, 'hex');
-		} else if(token instanceof Buffer) {
-			this.packet.token = token;
-		} else {
-			throw new Error('Unknown type of token: ' + token);
-		}
-
-		// Reload properties when token is updated
-		this._loadProperties();
+		return null;
 	}
 }
 

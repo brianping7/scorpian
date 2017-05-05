@@ -13,7 +13,7 @@ class Packet {
 			this.header[i] = 0xff;
 		}
 
-		this._serverHandshake = 0;
+		this._serverStampTime = 0;
 	}
 
 	handshake() {
@@ -23,19 +23,22 @@ class Packet {
 	handleHandshakeReply() {
 		if(typeof this._token === 'undefined') {
 			const token = this.checksum;
-			if(token.toString('hex').match(/^[fF]+$/)) {
+			if(token.toString('hex').match(/^[fF0]+$/)) {
 				// Device did not return its token so we set our token to null
 				this._token = null;
 			} else {
 				this.token = this.checksum;
 			}
 		}
-		this._serverHandshake = Date.now();
 	}
 
 	get needsHandshake() {
-		// Hopefully temporary, handshake before every command
-		return ! this._token || (Date.now() - this._serverHandshake) > 60000;
+		/*
+		 * Handshake if we:
+		 * 1) do not have a token
+		 * 2) it has been longer then 120 seconds since last received message
+		 */
+		return ! this._token || (Date.now() - this._serverStampTime) > 120000;
 	}
 
 	get raw() {
@@ -94,8 +97,9 @@ class Packet {
 
 		const stamp = this.stamp;
 		if(stamp > 0) {
-			// If the device return a stamp, store it
+			// If the device returned a stamp, store it
 			this._serverStamp = this.stamp;
+			this._serverStampTime = Date.now();
 		}
 
 		const encrypted = msg.slice(32);

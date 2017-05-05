@@ -1,3 +1,5 @@
+'use strict';
+
 
 /**
  * Setup power support for the given device.
@@ -12,7 +14,7 @@ function mixin(device, options) {
 	});
 
 	device.setPower = function(power) {
-		return options.set(power)
+		return options.set.apply(options, arguments)
 			.then(() => power);
 	};
 }

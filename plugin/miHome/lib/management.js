@@ -1,3 +1,5 @@
+'use strict';
+
 
 /**
  * Management of a device. Supports quering it for information and changing
@@ -32,7 +34,7 @@ class DeviceManagement {
 
 		return this.device.call('miIO.config_router', options)
 			.then(result => {
-				if(! result !== 0) {
+				if(result !== 0) {
 					throw new Error('Failed updating wireless');
 				}
 				return true;
