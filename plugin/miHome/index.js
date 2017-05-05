@@ -136,7 +136,7 @@ class MiHome {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'switch') {
             
-            console.log('Status: ' + subDevice);
+            console.log('Status: ' + subDevice.powerChannels);
         }
         
         return;
