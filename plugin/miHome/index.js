@@ -112,7 +112,7 @@ class MiHome {
       case 'PowerOn':
         this.powerSet(true);
         break;
-        
+
       default:
         console.log('Invalid type:' + cmd);
     }
@@ -138,9 +138,13 @@ class MiHome {
     if(this.device.type == 'gateway') {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'power-plug') {
-            subDevice.setPower("0", cmd)
-            .then(power => console.log(subDevice.type + " Power " + power))
-            .catch(err => console.error(subDevice.type + " Failed: " + err));
+
+            for (var i=0; i<subDevice.powerChannels.length; i++) {
+              console.log("Chan " + i);
+              subDevice.setPower(i, cmd)
+              .then(power => console.log(subDevice.type + " Power " + power))
+              .catch(err => console.error(subDevice.type + " Failed: " + err));
+            }           
         }
         
         return;
