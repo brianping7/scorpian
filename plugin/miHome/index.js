@@ -135,7 +135,7 @@ class MiHome {
     if(this.device.type == 'gateway') {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'power-plug') {
-            subDevice.setPower(1, false)
+            subDevice.setPower(0, false)
             .then(power => console.log(subDevice.type + " Power " + power))
             .catch(err => console.error(subDevice.type + " Failed :" + err));
         }
