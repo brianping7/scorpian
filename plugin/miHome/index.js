@@ -113,6 +113,10 @@ class MiHome {
         this.powerSet(true);
         break;
 
+      case 'PowerStatus':
+        this.powerStatus();
+        break;
+
       default:
         console.log('Invalid type:' + cmd);
     }
@@ -143,6 +147,14 @@ class MiHome {
     }           
   }
 
+  _deviecPowerStatus(inputDevice) {
+    var that = this;
+
+    for (var i=0; i<inputDevice.powerChannels.length; i++) {
+      console.log(inputDevice.type + " power " + inputDevice.power(i));
+    }           
+  }
+
 
   powerSet(cmd) {
     var that = this;
@@ -160,13 +172,24 @@ class MiHome {
     else {
       that._deviecPowerSet(that.device,cmd);   
     }
+  }
 
-    // if(this.device.hasCapability('power')) {
-    //   this.device.setPower(true)
-    //     .then(console.log(this.name + ":Power On"))
-    //     .catch(console.error(this.name + "Failed to Power On"));
-    // }
+  powerStatus() {
+    var that = this;
 
+    if(that.device.type == 'gateway') {
+      that.device.on('deviceAvailable', subDevice => {
+        if (subDevice.type == 'power-plug') {
+
+          that._deviecPowerStatus(subDevice);          
+        }
+        
+        return;
+      });
+    }
+    else {
+      that._deviecPowerStatus(that.device);   
+    }
   }
 
 
