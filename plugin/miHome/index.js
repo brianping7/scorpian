@@ -136,8 +136,8 @@ class MiHome {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'power-plug') {
             subDevice.setPower(1, false)
-            .then(console.log(subDevice.name + " Power " + subDevice.power()))
-            .catch(console.error(subDevice.name + " Failed to Power Off"));
+            .then(power => console.log(subDevice.type + " Power " + power))
+            .catch(err => console.error(subDevice.type + " Failed :" + err));
         }
         
         return;
