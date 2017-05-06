@@ -132,26 +132,33 @@ class MiHome {
 
   }
 
+  _deviecPowerSet(inputDevice, cmd) {
+    var that = this;
+
+    for (var i=0; i<inputDevice.powerChannels.length; i++) {
+      console.log("Chan " + i);
+      inputDevice.setPower(i, cmd)
+      .then(power => console.log(inputDevice.type + " Power " + power))
+      .catch(err => console.error(inputDevice.type + " Failed: " + err));
+    }           
+  }
+
+
   powerSet(cmd) {
     var that = this;
 
-    if(this.device.type == 'gateway') {
+    if(that.device.type == 'gateway') {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'power-plug') {
 
-            for (var i=0; i<subDevice.powerChannels.length; i++) {
-              console.log("Chan " + i);
-              subDevice.setPower(i, cmd)
-              .then(power => console.log(subDevice.type + " Power " + power))
-              .catch(err => console.error(subDevice.type + " Failed: " + err));
-            }           
+          that._deviecPowerSet(subDevice,cmd);          
         }
         
         return;
       });
     }
     else {
-
+      that._deviecPowerSet(that.device,cmd);   
     }
 
     // if(this.device.hasCapability('power')) {
