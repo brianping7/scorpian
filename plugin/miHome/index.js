@@ -106,10 +106,13 @@ class MiHome {
         break;
 
       case 'PowerOff':
-          this.powerOff();
+        this.powerSet(false);
 
         break;
-
+      case 'PowerOn':
+        this.powerSet(true);
+        break;
+        
       default:
         console.log('Invalid type:' + cmd);
     }
@@ -129,13 +132,13 @@ class MiHome {
 
   }
 
-  powerOff() {
+  powerSet(cmd) {
     var that = this;
 
     if(this.device.type == 'gateway') {
       that.device.on('deviceAvailable', subDevice => {
         if (subDevice.type == 'power-plug') {
-            subDevice.setPower(1, false)
+            subDevice.setPower("0", cmd)
             .then(power => console.log(subDevice.type + " Power " + power))
             .catch(err => console.error(subDevice.type + " Failed: " + err));
         }
