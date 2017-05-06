@@ -151,7 +151,7 @@ class MiHome {
     var that = this;
 
     for (var i=0; i<inputDevice.powerChannels.length; i++) {
-      console.log(inputDevice.type + " power " + inputDevice.power(i));
+      console.log(inputDevice.type + " power " + inputDevice.power(JSON.stringify(i)));
     }           
   }
 
