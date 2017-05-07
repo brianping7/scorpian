@@ -1,5 +1,5 @@
 {
-  "name": "Scorpius",
+  "name": "Scorpian",
   "version": "0.0.1",
   "description": "Integrate your Home Devices...",
   "main": "index.js",
@@ -19,7 +19,8 @@
     "debug": "^2.6.3",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "commander": "2.9.0"
+    "commander": "2.9.0",
+    "appdirectory": "0.1.0"
   },
   "engines": {
     "node": ">=6.0.0"
