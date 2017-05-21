@@ -133,6 +133,12 @@ class MiHome {
         this.powerStatus();
         break;
 
+      case 'LightStatus':
+        if (this.device.type == 'light') {
+          console.log(this.name + " Mode : " + this.device.colorMode());
+        }
+        break;
+
       default:
         console.log('Invalid type:' + cmd);
     }
