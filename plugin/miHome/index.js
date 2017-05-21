@@ -135,7 +135,7 @@ class MiHome {
 
       case 'LightStatus':
         if (this.device.type == 'light') {
-          console.log(this.name + " Mode : " + this.device.colorMode());
+          console.log(this.name + " Mode : " + this.device.colorTemperature);
         }
         break;
 
