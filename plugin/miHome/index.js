@@ -106,7 +106,7 @@ class MiHome {
         break;
 
       case 'PowerOff':
-        if （this.device.type == 'light' {
+        if (this.device.type == 'light') {
           this.device.setPower(false)
             .then(res => console.log(this.name + " PowerOff result : " + res))
             .catch(err => console.error(this.name + " PowerOff error: " + err));
@@ -119,7 +119,7 @@ class MiHome {
         break;
       case 'PowerOn':
         
-        if （this.device.type == 'light' {
+        if (this.device.type == 'light') {
           this.device.setPower(true)
             .then(res => console.log(this.name + " PowerOn result : " + res))
             .catch(err => console.error(this.name + " PowerOn error: " + err));
