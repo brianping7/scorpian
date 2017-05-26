@@ -222,12 +222,14 @@ class MiHome {
     that.device.on('deviceAvailable', subDevice => {
       console.log('ID: ' + subDevice.id + ' Model:' + subDevice.model + ' Type:' + subDevice.type );
       
-      if (subDevice.type == 'controller') {
+      if (subDevice.model == 'lumi.switch') {
           console.log('Actions: ' + subDevice.actions );
           debugger;
-          subDevice.call('set_status', [ 'status','click' ])
-            .then(console.log("click ok"))
-            .catch(console.error("click failed"));        
+
+          data = {"cmd":"write","model":"switch","sid":subDevice.id, "data":"{\"status\":\"click\"}" }
+          that.device.devApi.send(data);        
+                 // {"cmd":"write","model":"switch","sid":"112316","short_id":4343, }
+
         }
 
       return;
