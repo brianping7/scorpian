@@ -1,5 +1,5 @@
 /*!
- * Brica Project
+ * Scorpian Project
  * Copyright(c) 2017-2017 Brian Ping
  */
 
