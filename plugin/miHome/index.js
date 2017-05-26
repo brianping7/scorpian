@@ -1,5 +1,6 @@
 var miio = require('./lib');  
 
+const crypto = require('crypto');
 // var vacuum = python.import('mirobot/protocol');
 
 
@@ -226,11 +227,17 @@ class MiHome {
           console.log('Actions: ' + subDevice.actions );
           debugger;
 
+          let cipher = crypto.createCipheriv('aes-128-cbc', that.device.packet._tokenKey, that.device.packet._tokenIV);
+          let encrypted = Buffer.concat([
+            cipher.update(that.device._developerKey),
+            cipher.final()
+          ]);
+
           var data = {"cmd":"write",
                 "model":"switch",
                 "sid":subDevice.id,
                 "short_id":2014, 
-                "data":"{\"status\":\"click\",\"key\":\"830c9710b71b14519e778ab5bec03465\"}" }
+                "data":"{\"status\":\"click\",\"key\":\"" + encrypted + "\"}" }
           that.device.devApi.send(data);        
                  // 0: data = {"cmd":"read_ack","model":"switch","sid":"158d000155e11d","short_id":2014,"data":"{\"voltage\":3062}"}
 
