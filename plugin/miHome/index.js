@@ -226,7 +226,11 @@ class MiHome {
           console.log('Actions: ' + subDevice.actions );
           debugger;
 
-          var data = {"cmd":"write","model":"switch","sid":subDevice.id, "short_id":2014, "data":"{\"status\":\"click\"}" };
+          var data = {"cmd":"write",
+                "model":"switch",
+                "sid":subDevice.id,
+                "short_id":2014, 
+                "data":"{\"status\":\"click\",\"key\":\"830c9710b71b14519e778ab5bec03465\"}" }
           that.device.devApi.send(data);        
                  // 0: data = {"cmd":"read_ack","model":"switch","sid":"158d000155e11d","short_id":2014,"data":"{\"voltage\":3062}"}
 
