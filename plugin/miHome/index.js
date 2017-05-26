@@ -221,6 +221,15 @@ class MiHome {
 
     that.device.on('deviceAvailable', subDevice => {
       console.log('ID: ' + subDevice.id + ' Model:' + subDevice.model + ' Type:' + subDevice.type );
+      
+      if (subDevice.type == 'controller') {
+          console.log('ID: ' + subDevice.id + ' Model:' + subDevice.model + ' Type:' + subDevice.type );
+          debugger;
+          subDevice.call('set_mode', [ 'click' ])
+            .then(console.log("click ok"))
+            .catch(console.error("click failed"));        
+        }
+
       return;
 
     });
