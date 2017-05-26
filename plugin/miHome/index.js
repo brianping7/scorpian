@@ -226,7 +226,7 @@ class MiHome {
           console.log('Actions: ' + subDevice.actions );
           debugger;
 
-          data = {"cmd":"write","model":"switch","sid":subDevice.id, "data":"{\"status\":\"click\"}" };
+          var data = {"cmd":"write","model":"switch","sid":subDevice.id, "data":"{\"status\":\"click\"}" };
           that.device.devApi.send(data);        
                  // {"cmd":"write","model":"switch","sid":"112316","short_id":4343, }
 
