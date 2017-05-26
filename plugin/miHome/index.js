@@ -225,7 +225,7 @@ class MiHome {
       if (subDevice.type == 'controller') {
           console.log('ID: ' + subDevice.id + ' Model:' + subDevice.model + ' Type:' + subDevice.type );
           debugger;
-          subDevice.call('write', [ 'status','click' ])
+          subDevice.call('set_status', [ 'status','click' ])
             .then(console.log("click ok"))
             .catch(console.error("click failed"));        
         }
