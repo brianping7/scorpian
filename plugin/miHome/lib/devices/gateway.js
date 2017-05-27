@@ -282,7 +282,7 @@ class DeveloperApi extends EventEmitter {
 				}
 				break;
 			case 'read_ack': {
-				console.log('Read ack' + data);
+				console.log('Read ack' +  JSON.stringify(data));
 				const device = this.devices[data.sid];
 				if(device) {
 					device.lastSeen = Date.now();
@@ -315,7 +315,7 @@ class DeveloperApi extends EventEmitter {
 				}
 			}
 			case 'write_ack': {
-				console.log('Write ack' + data);
+				console.log('Write ack' +  JSON.stringify(data));
 			}
 		}
 	}
