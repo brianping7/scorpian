@@ -247,6 +247,26 @@ class MiHome {
            var temp = that.device.packet._tokenIV.toString('hex');
            console.log('tokenIV ' + temp );
 
+           var tempIV = Buffer.alloc(16);
+           tempIV[0] = 0x17;
+           tempIV[1] = 0x99;
+           tempIV[2] = 0x6d;
+           tempIV[3] = 0x09;
+           tempIV[4] = 0x3d;
+           tempIV[5] = 0x28;
+           tempIV[6] = 0xdd;
+           tempIV[7] = 0xb3;
+           tempIV[8] = 0xba;
+           tempIV[9] = 0x69;
+           tempIV[10] = 0x5a;
+           tempIV[11] = 0x2e;
+           tempIV[12] = 0x6f;
+           tempIV[13] = 0x58;
+           tempIV[14] = 0x56;
+           tempIV[15] = 0x2e;
+
+
+          //var tempIV = new Buffer([0x17, 0x99, 0x6d, 0x09, 0x3d, 0x28, 0xdd, 0xb3, 0xba, 0x69, 0x5a, 0x2e, 0x6f, 0x58, 0x56, 0x2e})
            var tempbuffer= new Buffer(key.toString());
 
           console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
