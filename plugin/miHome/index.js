@@ -244,9 +244,11 @@ class MiHome {
           var temp = that.device.packet._tokenKey.toString('ascii');
            console.log('temp ' + temp );
 
+           var tempbuffer= new Buffer(key.toString());
+
           console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(that.device.packet._tokenKey, that.device.packet._tokenIV, token.toString());
+          var base64str = that.encryption(tempbuffer, that.device.packet._tokenIV, token.toString());
 
           console.log(' ciphertext: ' + base64str.toString('hex'));
 
