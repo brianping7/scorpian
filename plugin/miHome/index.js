@@ -236,7 +236,7 @@ class MiHome {
           var clearEncoding = 'utf8';
           //var cipherEncoding = 'hex';
           //If the next line is uncommented, the final cleartext is wrong.
-          var cipherEncoding = 'binary';
+          var cipherEncoding = 'base64';
       /*加密*/
           var bufferToken = new Buffer(token.toString());
 
@@ -247,7 +247,7 @@ class MiHome {
           cipherChunks.push(cipher.final(cipherEncoding));
     
 
-          var base64str = cipherChunks.join('');
+          var base64str = new Buffer(cipherChunks.join(''));
 
           console.log(cipherEncoding + ' ciphertext: ' + base64str);
 
