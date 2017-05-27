@@ -257,6 +257,7 @@ class DeveloperApi extends EventEmitter {
 				}
 				break;
 			case 'get_id_list_ack':
+				console.log('list ack' +  JSON.stringify(data));
 				if(data.sid === this.sid) {
 					// Response with all identifiers of the devices
 					this.token = data.token;
