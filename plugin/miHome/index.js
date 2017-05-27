@@ -314,6 +314,11 @@ class MiHome {
 
     });
 
+    function myfunc(){
+      console.log("myfunc");
+    };
+    var mytimeout=setTimeout(myfunc,30000);
+
     console.log('End of function');
     if(that.device.devices) {
 
