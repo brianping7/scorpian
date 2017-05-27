@@ -265,13 +265,13 @@ class MiHome {
            tempIV[14] = 0x56;
            tempIV[15] = 0x2e;
 
-
+          key = '830c9710b71b14519e778ab5bec03465';
           //var tempIV = new Buffer([0x17, 0x99, 0x6d, 0x09, 0x3d, 0x28, 0xdd, 0xb3, 0xba, 0x69, 0x5a, 0x2e, 0x6f, 0x58, 0x56, 0x2e})
            var tempbuffer= new Buffer(key.toString());
 
           console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(tempbuffer, that.device.packet._tokenIV, token.toString());
+          var base64str = that.encryption(tempbuffer, tempIV, token.toString());
 
           console.log(' ciphertext: ' + base64str.toString('hex'));
 
