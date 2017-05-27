@@ -282,6 +282,7 @@ class DeveloperApi extends EventEmitter {
 				}
 				break;
 			case 'read_ack': {
+				console.log('Read ack' + data);
 				const device = this.devices[data.sid];
 				if(device) {
 					device.lastSeen = Date.now();
@@ -298,6 +299,7 @@ class DeveloperApi extends EventEmitter {
 				break;
 			}
 			case 'report': {
+
 				const device = this.devices[data.sid];
 				if(device) {
 					device.lastSeen = Date.now();
@@ -311,6 +313,9 @@ class DeveloperApi extends EventEmitter {
 				} else if(data.sid === this.sid) {
 					this.emit('properties', JSON.parse(data.data));
 				}
+			}
+			case 'write_ack': {
+				console.log('Write ack' + data);
 			}
 		}
 	}

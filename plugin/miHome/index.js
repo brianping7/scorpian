@@ -230,7 +230,7 @@ class MiHome {
     console.log('All SubDevice:'); 
 
     that.device.on('deviceAvailable', subDevice => {
-      console.log('ID: ' + subDevice.id + ' Model:' + subDevice.model + ' Type:' + subDevice.type );
+      //console.log('ID: ' + subDevice.id + ' Model:' + subDevice.model + ' Type:' + subDevice.type );
       
       if (subDevice.model == 'lumi.switch') {
           console.log('Actions: ' + subDevice.actions );
