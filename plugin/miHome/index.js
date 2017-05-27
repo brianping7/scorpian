@@ -216,6 +216,19 @@ class MiHome {
   }
 
 
+encryption (data, key, iv) {
+    iv = iv || "";
+    var clearEncoding = 'utf8';
+    var cipherEncoding = 'base64';
+    var cipherChunks = [];
+    var cipher = crypto.createCipher('aes-128-ecb', key);
+    cipher.setAutoPadding(true);
+    cipherChunks.push(cipher.update(data, clearEncoding, cipherEncoding));
+    cipherChunks.push(cipher.final(cipherEncoding));
+    return cipherChunks.join('');
+}
+
+
   list() {
     var that = this;
     console.log('All SubDevice:'); 
@@ -232,22 +245,9 @@ class MiHome {
 
           console.log('key ' + key + ' token ' + token)
 
-          var algorithm = 'aes-128-ecb';
-          var clearEncoding = 'utf8';
-          //var cipherEncoding = 'hex';
-          //If the next line is uncommented, the final cleartext is wrong.
-          var cipherEncoding = 'base64';
-      /*加密*/
-          var bufferToken = new Buffer(token.toString());
-
-          var cipher = crypto.createCipher(algorithm, bufferToken);
-
-          var cipherChunks = [];
-          cipherChunks.push(cipher.update(key, clearEncoding, cipherEncoding));
-          cipherChunks.push(cipher.final(cipherEncoding));
     
 
-          var base64str = new Buffer(cipherChunks.join(''));
+          var base64str = encryption(key,token,0);
 
           console.log(cipherEncoding + ' ciphertext: ' + base64str);
 
