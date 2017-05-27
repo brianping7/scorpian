@@ -222,7 +222,7 @@ class MiHome {
     var cipherChunks = [];
     cipherChunks.push(cipher.update(data, 'utf8', 'hex'));
     cipherChunks.push(cipher.final('hex'));
-    return new Buffer(cipherChunks.join(''), 'hex');
+    return cipherChunks.join('');
 
     // var crypted = cipher.update(data, 'utf8', 'binary');
     // crypted += cipher.final('binary');
@@ -278,11 +278,11 @@ class MiHome {
 
           //console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(key.toString(), tempIV, token.toString());
+          var base64str = that.encryption(key.toString('utf8'), tempIV.toString('utf8'), token.toString('utf8'));
 
-          console.log(' ciphertext: ' + base64str.toString('hex'));
+          console.log(' ciphertext: ' + base64str);
 
-          var finalKey = base64str.toString('hex');
+          var finalKey = base64str;
 
           var data = {"cmd":"write",
                 "model":"switch",
