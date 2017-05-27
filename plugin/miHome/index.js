@@ -218,10 +218,16 @@ class MiHome {
 
   encryption (key, iv, data) {
     var cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
-    var crypted = cipher.update(data, 'utf8', 'binary');
-    crypted += cipher.final('binary');
-    crypted = new Buffer(crypted, 'binary');
-    return crypted;
+
+    var cipherChunks = [];
+    cipherChunks.push(cipher.update(data, 'utf8', 'base64'));
+    cipherChunks.push(cipher.final('base64'));
+    return cipherChunks.join('');
+
+    // var crypted = cipher.update(data, 'utf8', 'binary');
+    // crypted += cipher.final('binary');
+    // crypted = new Buffer(crypted, 'binary');
+    // return crypted;
   }
 
 
