@@ -241,8 +241,11 @@ class MiHome {
 
           console.log('key ' + key + ' token ' + token)
 
-          var temp = that.device.packet._tokenKey.toString('ascii');
-           console.log('temp ' + temp );
+          var temp = that.device.packet._tokenKey.toString('hex');
+           console.log('tokenkey ' + temp );
+
+           var temp = that.device.packet._tokenIV.toString('hex');
+           console.log('tokenIV ' + temp );
 
            var tempbuffer= new Buffer(key.toString());
 
