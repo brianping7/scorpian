@@ -239,7 +239,7 @@ class DeveloperApi extends EventEmitter {
 		switch(data.cmd) {
 			case 'iam':
 			// TODO: Do we need to protect against multiple gateways?
-
+				console.log('whomi' +  JSON.stringify(data));
 				// This is a response to the initial whois
 				this.sid = data.sid;
 				this.port = data.port;
@@ -251,6 +251,7 @@ class DeveloperApi extends EventEmitter {
 
 				break;
 			case 'heartbeat':
+				console.log('heartbeat' +  JSON.stringify(data));
 				if(data.sid === this.sid) {
 					this.token = data.token;
 				}
