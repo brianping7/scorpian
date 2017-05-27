@@ -245,13 +245,15 @@ class MiHome {
 
           var base64str = that.encryption(that.device.packet._tokenKey, that.device.packet._tokenIV, token.toString());
 
-          console.log(' ciphertext: ' + base64str);
+          console.log(' ciphertext: ' + base64str.toString('hex'));
+
+          var finalKey = base64str.toString('hex');
 
           var data = {"cmd":"write",
                 "model":"switch",
                 "sid":subDevice.id,
                 "short_id":2014, 
-                "data":"{\"status\":\"click\",\"key\":\"" + base64str + "\"}" }
+                "data":"{\"status\":\"click\",\"key\":\"" + finalKey + "\"}" }
           that.device.devApi.send(data);        
                  // 0: data = {"cmd":"read_ack","model":"switch","sid":"158d000155e11d","short_id":2014,"data":"{\"voltage\":3062}"}
 
