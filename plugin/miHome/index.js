@@ -236,7 +236,7 @@ class MiHome {
           var clearEncoding = 'utf8';
           //var cipherEncoding = 'hex';
           //If the next line is uncommented, the final cleartext is wrong.
-          var cipherEncoding = 'base64';
+          var cipherEncoding = 'hex';
       /*加密*/
           var bufferToken = new Buffer(token.toString());
 
@@ -245,11 +245,11 @@ class MiHome {
           var cipherChunks = [];
           cipherChunks.push(cipher.update(key, clearEncoding, cipherEncoding));
           cipherChunks.push(cipher.final(cipherEncoding));
-          console.log(cipherEncoding + ' ciphertext: ' + cipherChunks.join(''));
+    
 
-          var base64str = new Buffer(encrypted).toString('hex');
+          var base64str = cipherChunks.join('');
 
-          console.log('base64str ' + base64str );
+          console.log(cipherEncoding + ' ciphertext: ' + base64str);
 
           var data = {"cmd":"write",
                 "model":"switch",
