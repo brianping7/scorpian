@@ -216,17 +216,17 @@ class MiHome {
   }
 
 
-encryption (data, key, iv) {
-    iv = iv || "";
-    var clearEncoding = 'utf8';
-    var cipherEncoding = 'base64';
-    var cipherChunks = [];
-    var cipher = crypto.createCipher('aes-128-ecb', key);
-    cipher.setAutoPadding(true);
-    cipherChunks.push(cipher.update(data, clearEncoding, cipherEncoding));
-    cipherChunks.push(cipher.final(cipherEncoding));
-    return cipherChunks.join('');
-}
+  encryption (data, key, iv) {
+      iv = iv || "";
+      var clearEncoding = 'utf8';
+      var cipherEncoding = 'base64';
+      var cipherChunks = [];
+      var cipher = crypto.createCipher('aes-128-ecb', key);
+      cipher.setAutoPadding(true);
+      cipherChunks.push(cipher.update(data, clearEncoding, cipherEncoding));
+      cipherChunks.push(cipher.final(cipherEncoding));
+      return cipherChunks.join('');
+  }
 
 
   list() {
@@ -247,7 +247,7 @@ encryption (data, key, iv) {
 
     
 
-          var base64str = encryption(key,token,0);
+          var base64str = that.encryption(key,token,0);
 
           console.log(cipherEncoding + ' ciphertext: ' + base64str);
 
