@@ -218,9 +218,9 @@ class MiHome {
 
   encryption (key, iv, data) {
     var cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
-    var crypted = cipher.update(data, 'utf8', 'binary');
-    crypted += cipher.final('binary');
-    crypted = new Buffer(crypted, 'binary');
+    var crypted = cipher.update(data, 'utf8', 'hex');
+    crypted += cipher.final('hex');
+    crypted = new Buffer(crypted, 'hex');
     return crypted;
   }
 
@@ -243,7 +243,7 @@ class MiHome {
 
           console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(that.device.packet._tokenKey, that.device.packet._tokenIV, key);
+          var base64str = that.encryption(that.device.packet._tokenKey, that.device.packet._tokenIV, token);
 
           console.log(' ciphertext: ' + base64str);
 
