@@ -241,11 +241,11 @@ class MiHome {
           var token = that.device.devApi.token;
           console.log('key ' + key + ' token ' + token)
 
-          var temp = that.device.packet._tokenKey.toString('hex');
-           console.log('tokenkey ' + temp );
+          // var temp = that.device.packet._tokenKey.toString('hex');
+          //  console.log('tokenkey ' + temp );
 
-           var temp = that.device.packet._tokenIV.toString('hex');
-           console.log('tokenIV ' + temp );
+          //  var temp = that.device.packet._tokenIV.toString('hex');
+          //  console.log('tokenIV ' + temp );
 
            var tempIV = Buffer.alloc(16);
            tempIV[0] = 0x17;
@@ -288,9 +288,9 @@ class MiHome {
           //var tempIV = new Buffer([0x17, 0x99, 0x6d, 0x09, 0x3d, 0x28, 0xdd, 0xb3, 0xba, 0x69, 0x5a, 0x2e, 0x6f, 0x58, 0x56, 0x2e})
            //var tempbuffer= new Buffer(key.toString());
 
-          console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
+          //console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(tempKey, tempIV, token.toString());
+          var base64str = that.encryption(tempKey, tempIV, token);
 
           console.log(' ciphertext: ' + base64str.toString('hex'));
 
