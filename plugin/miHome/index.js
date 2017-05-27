@@ -220,7 +220,7 @@ class MiHome {
     var cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
     var crypted = cipher.update(data, 'utf8', 'binary');
     crypted += cipher.final('binary');
-    crypted = new Buffer(crypted, 'hex');
+    crypted = new Buffer(crypted, 'binary');
     return crypted;
   }
 
