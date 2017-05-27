@@ -227,16 +227,23 @@ class MiHome {
           console.log('Actions: ' + subDevice.actions );
           debugger;
 
-          var key = that.device.packet._tokenKey.toString('hex',0,15);
-          var token = that.device.packet._tokenIV.toString('hex',0,15);
+          var key = that.device._developerKey;
+          var token = that.device._lastToken;
 
           console.log('key ' + key + ' token ' + token)
 
-          let cipher = crypto.createCipheriv('aes-128-cbc', that.device.packet._tokenKey, that.device.packet._tokenIV);
-          let encrypted = Buffer.concat([
-            cipher.update(that.device._developerKey),
-            cipher.final()
-          ]);
+          var algorithm = 'aes-128-ecb';
+          var clearEncoding = 'utf8';
+          //var cipherEncoding = 'hex';
+          //If the next line is uncommented, the final cleartext is wrong.
+          var cipherEncoding = 'base64';
+      /*加密*/
+          var cipher = crypto.createCipher(algorithm, token);
+
+          var cipherChunks = [];
+          cipherChunks.push(cipher.update(key, clearEncoding, cipherEncoding));
+          cipherChunks.push(cipher.final(cipherEncoding));
+          console.log(cipherEncoding + ' ciphertext: ' + cipherChunks.join(''));
 
           var base64str = new Buffer(encrypted).toString('hex');
 
