@@ -227,13 +227,20 @@ class MiHome {
           console.log('Actions: ' + subDevice.actions );
           debugger;
 
+          var key = that.device.packet._tokenKey.toString('ascii',0,15);
+          var token = that.device.packet._tokenIV.toString('ascii',0,15);
+
+          console.log('key ' + key + ' token ' + token)
+
           let cipher = crypto.createCipheriv('aes-128-cbc', that.device.packet._tokenKey, that.device.packet._tokenIV);
           let encrypted = Buffer.concat([
             cipher.update(that.device._developerKey),
             cipher.final()
           ]);
 
-          var base64str = new Buffer(encrypted).toString('base64');
+          var base64str = new Buffer(encrypted).toString('hex');
+
+          console.log('base64str ' + base64str );
 
           var data = {"cmd":"write",
                 "model":"switch",
