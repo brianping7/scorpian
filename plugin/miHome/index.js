@@ -249,7 +249,7 @@ class MiHome {
 
           var base64str = that.encryption(key,bufferToken,0);
 
-          console.log(cipherEncoding + ' ciphertext: ' + base64str);
+          console.log(' ciphertext: ' + base64str);
 
           var data = {"cmd":"write",
                 "model":"switch",
