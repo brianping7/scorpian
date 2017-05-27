@@ -239,7 +239,8 @@ class MiHome {
           var key = that.device._developerKey;
           //var token = that.device._lastToken;
           var token = that.device.devApi.token;
-          console.log('key ' + key + ' token ' + token)
+          var packetToken = that.device.packet.token;
+          console.log('key ' + key + ' token ' + token + 'packetToken' + packetToken);
 
           // var temp = that.device.packet._tokenKey.toString('hex');
           //  console.log('tokenkey ' + temp );
@@ -317,7 +318,7 @@ class MiHome {
     function myfunc(){
       console.log("myfunc");
     };
-    var mytimeout=setTimeout(myfunc,30000);
+    var mytimeout=setTimeout(myfunc,60000);
 
     console.log('End of function');
     if(that.device.devices) {
