@@ -227,8 +227,8 @@ class MiHome {
           console.log('Actions: ' + subDevice.actions );
           debugger;
 
-          var key = that.device.packet._tokenKey.toString('ascii',0,15);
-          var token = that.device.packet._tokenIV.toString('ascii',0,15);
+          var key = that.device.packet._tokenKey.toString('hex',0,15);
+          var token = that.device.packet._tokenIV.toString('hex',0,15);
 
           console.log('key ' + key + ' token ' + token)
 
