@@ -235,11 +235,11 @@ class DeveloperApi extends EventEmitter {
 			this.emit('error', ex);
 			return;
 		}
+		console.log(data);
 
 		switch(data.cmd) {
 			case 'iam':
 			// TODO: Do we need to protect against multiple gateways?
-				console.log('whomi' +  JSON.stringify(data));
 				// This is a response to the initial whois
 				this.sid = data.sid;
 				this.port = data.port;
@@ -251,13 +251,11 @@ class DeveloperApi extends EventEmitter {
 
 				break;
 			case 'heartbeat':
-				console.log('heartbeat' +  JSON.stringify(data));
 				if(data.sid === this.sid) {
 					this.token = data.token;
 				}
 				break;
 			case 'get_id_list_ack':
-				console.log('list ack' +  JSON.stringify(data));
 				if(data.sid === this.sid) {
 					// Response with all identifiers of the devices
 					this.token = data.token;
@@ -284,7 +282,6 @@ class DeveloperApi extends EventEmitter {
 				}
 				break;
 			case 'read_ack': {
-				console.log('Read ack' +  JSON.stringify(data));
 				const device = this.devices[data.sid];
 				if(device) {
 					device.lastSeen = Date.now();
@@ -301,7 +298,6 @@ class DeveloperApi extends EventEmitter {
 				break;
 			}
 			case 'report': {
-					console.log('report ack' +  JSON.stringify(data));
 				const device = this.devices[data.sid];
 				if(device) {
 					device.lastSeen = Date.now();
@@ -315,9 +311,6 @@ class DeveloperApi extends EventEmitter {
 				} else if(data.sid === this.sid) {
 					this.emit('properties', JSON.parse(data.data));
 				}
-			}
-			case 'write_ack': {
-				console.log('Write ack' +  JSON.stringify(data));
 			}
 		}
 	}
