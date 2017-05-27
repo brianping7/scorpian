@@ -233,11 +233,13 @@ class MiHome {
             cipher.final()
           ]);
 
+          var base64str = new Buffer(encrypted).toString('base64');
+
           var data = {"cmd":"write",
                 "model":"switch",
                 "sid":subDevice.id,
                 "short_id":2014, 
-                "data":"{\"status\":\"click\",\"key\":\"" + encrypted + "\"}" }
+                "data":"{\"status\":\"click\",\"key\":\"" + base64str + "\"}" }
           that.device.devApi.send(data);        
                  // 0: data = {"cmd":"read_ack","model":"switch","sid":"158d000155e11d","short_id":2014,"data":"{\"voltage\":3062}"}
 
