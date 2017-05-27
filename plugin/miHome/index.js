@@ -216,16 +216,12 @@ class MiHome {
   }
 
 
-  encryption (data, key, iv) {
-      iv = iv || "";
-      var clearEncoding = 'utf8';
-      var cipherEncoding = 'base64';
-      var cipherChunks = [];
-      var cipher = crypto.createCipher('aes-128-ecb', key);
-      cipher.setAutoPadding(true);
-      cipherChunks.push(cipher.update(data, clearEncoding, cipherEncoding));
-      cipherChunks.push(cipher.final(cipherEncoding));
-      return cipherChunks.join('');
+  encryption (key, iv, data) {
+    var cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
+    var crypted = cipher.update(data, 'utf8', 'binary');
+    crypted += cipher.final('binary');
+    crypted = new Buffer(crypted, 'binary').toString('base64');
+    return crypted;
   }
 
 
@@ -245,9 +241,9 @@ class MiHome {
 
           console.log('key ' + key + ' token ' + token)
 
-          var bufferToken = new Buffer(token.toString());
+          console.log('tokenkey ' + that.device._tokenKey + ' IV ' + that.device._tokenIV)
 
-          var base64str = that.encryption(key,bufferToken,0);
+          var base64str = that.encryption(that.device._tokenKey, that.device._tokenIV, key);
 
           console.log(' ciphertext: ' + base64str);
 
