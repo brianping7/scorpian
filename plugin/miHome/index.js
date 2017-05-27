@@ -222,7 +222,7 @@ class MiHome {
     var cipherChunks = [];
     cipherChunks.push(cipher.update(data, 'utf8', 'base64'));
     cipherChunks.push(cipher.final('base64'));
-    return cipherChunks.join('');
+    return new Buffer(cipherChunks.join(''), 'binary');
 
     // var crypted = cipher.update(data, 'utf8', 'binary');
     // crypted += cipher.final('binary');
