@@ -265,13 +265,32 @@ class MiHome {
            tempIV[14] = 0x56;
            tempIV[15] = 0x2e;
 
-          key = '830c9710b71b14519e778ab5bec03465';
+           var tempKey = Buffer.alloc(16);
+           tempKey[0] = 0x83;
+           tempKey[1] = 0x0c;
+           tempKey[2] = 0x97;
+           tempKey[3] = 0x10;
+           tempKey[4] = 0xb7;
+           tempKey[5] = 0x1b;
+           tempKey[6] = 0x14;
+           tempKey[7] = 0x51;
+           tempKey[8] = 0x9e;
+           tempKey[9] = 0x77;
+           tempKey[10] = 0x8a;
+           tempKey[11] = 0xb5;
+           tempKey[12] = 0xbe;
+           tempKey[13] = 0xc0;
+           tempKey[14] = 0x34;
+           tempKey[15] = 0x65;
+
+
+          //key = '830c9710b71b14519e778ab5bec03465';
           //var tempIV = new Buffer([0x17, 0x99, 0x6d, 0x09, 0x3d, 0x28, 0xdd, 0xb3, 0xba, 0x69, 0x5a, 0x2e, 0x6f, 0x58, 0x56, 0x2e})
-           var tempbuffer= new Buffer(key.toString());
+           //var tempbuffer= new Buffer(key.toString());
 
           console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(tempbuffer, tempIV, token.toString());
+          var base64str = that.encryption(tempKey, tempIV, token.toString());
 
           console.log(' ciphertext: ' + base64str.toString('hex'));
 
