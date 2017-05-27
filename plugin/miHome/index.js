@@ -308,10 +308,13 @@ class MiHome {
 
         }
 
+       
+
       return;
 
     });
 
+    console.log('End of function');
     if(that.device.devices) {
 
       that.device.devices.forEach(function(item){  
