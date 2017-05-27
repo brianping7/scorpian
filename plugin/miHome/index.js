@@ -220,8 +220,8 @@ class MiHome {
     var cipher = crypto.createCipheriv('aes-128-cbc', key, iv);
 
     var cipherChunks = [];
-    cipherChunks.push(cipher.update(data, 'utf8', 'base64'));
-    cipherChunks.push(cipher.final('base64'));
+    cipherChunks.push(cipher.update(data, 'utf8', 'binary'));
+    cipherChunks.push(cipher.final('binary'));
     return new Buffer(cipherChunks.join(''), 'binary');
 
     // var crypted = cipher.update(data, 'utf8', 'binary');
