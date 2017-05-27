@@ -240,7 +240,7 @@ class MiHome {
           //var token = that.device._lastToken;
           var token = that.device.devApi.token;
           var packetToken = that.device.packet.token;
-          console.log('key ' + key + ' token ' + token + 'packetToken' + packetToken);
+          console.log('key ' + key + ' token ' + token + ' packetToken ' + packetToken);
 
           // var temp = that.device.packet._tokenKey.toString('hex');
           //  console.log('tokenkey ' + temp );
@@ -291,7 +291,7 @@ class MiHome {
 
           //console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
-          var base64str = that.encryption(tempKey, tempIV, token);
+          var base64str = that.encryption(tempKey, tempIV, packetToken);
 
           console.log(' ciphertext: ' + base64str.toString('hex'));
 
