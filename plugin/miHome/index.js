@@ -245,9 +245,9 @@ class MiHome {
 
           console.log('key ' + key + ' token ' + token)
 
-    
+          var bufferToken = new Buffer(token.toString());
 
-          var base64str = that.encryption(key,token,0);
+          var base64str = that.encryption(key,bufferToken,0);
 
           console.log(cipherEncoding + ' ciphertext: ' + base64str);
 
