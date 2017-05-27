@@ -236,7 +236,7 @@ class MiHome {
           var clearEncoding = 'utf8';
           //var cipherEncoding = 'hex';
           //If the next line is uncommented, the final cleartext is wrong.
-          var cipherEncoding = 'hex';
+          var cipherEncoding = 'binary';
       /*加密*/
           var bufferToken = new Buffer(token.toString());
 
