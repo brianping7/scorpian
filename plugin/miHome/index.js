@@ -301,6 +301,7 @@ class MiHome {
                 "sid":subDevice.id,
                 "short_id":2014, 
                 "data":"{\"status\":\"click\",\"key\":\"" + finalKey + "\"}" }
+          console.log('send data' +  JSON.stringify(data));
           that.device.devApi.send(data);        
                  // 0: data = {"cmd":"read_ack","model":"switch","sid":"158d000155e11d","short_id":2014,"data":"{\"voltage\":3062}"}
 
