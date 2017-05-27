@@ -301,7 +301,7 @@ class DeveloperApi extends EventEmitter {
 				break;
 			}
 			case 'report': {
-
+					console.log('report ack' +  JSON.stringify(data));
 				const device = this.devices[data.sid];
 				if(device) {
 					device.lastSeen = Date.now();
