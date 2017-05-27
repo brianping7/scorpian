@@ -237,7 +237,7 @@ class MiHome {
           debugger;
 
           var key = that.device._developerKey;
-          var token = that.device._lastToken;
+          var token = subDevice._lastToken;
 
           console.log('key ' + key + ' token ' + token)
 
