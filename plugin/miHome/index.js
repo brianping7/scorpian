@@ -241,6 +241,9 @@ class MiHome {
 
           console.log('key ' + key + ' token ' + token)
 
+          var temp = that.device.packet._tokenKey.toString('hex');
+           console.log('temp ' + temp );
+
           console.log('tokenkey ' + that.device.packet._tokenKey + ' IV ' + that.device.packet._tokenIV)
 
           var base64str = that.encryption(that.device.packet._tokenKey, that.device.packet._tokenIV, token.toString());
