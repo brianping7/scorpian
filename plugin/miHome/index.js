@@ -238,7 +238,9 @@ class MiHome {
           //If the next line is uncommented, the final cleartext is wrong.
           var cipherEncoding = 'base64';
       /*加密*/
-          var cipher = crypto.createCipher(algorithm, token);
+          var bufferToken = new Buffer(token);
+          
+          var cipher = crypto.createCipher(algorithm, bufferToken);
 
           var cipherChunks = [];
           cipherChunks.push(cipher.update(key, clearEncoding, cipherEncoding));
